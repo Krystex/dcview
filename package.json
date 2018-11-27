@@ -4,6 +4,7 @@
   "description": "A docker-compose viewer",
   "main": "src/index.js",
   "license": "MIT",
+  "bin": "src/index.js",
   "dependencies": {
     "chalk": "^2.4.1"
   }
