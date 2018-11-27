@@ -3,5 +3,8 @@
   "version": "0.0.1",
   "description": "A docker-compose viewer",
   "main": "src/index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.4.1"
+  }
 }

@@ -1,26 +1,29 @@
-const util = require('util')
-const exec = util.promisify(require('child_process').exec)
+const chalk = require("chalk")
+const { print, println, clear } = require("./terminal")
+const docker = require("./docker")
+
+const redrawTime = 2000 /* milliseconds */
 
 async function main() {
-  debugger;
-  const dockerInfo = (await exec('docker-compose ps --q'))
-    // fetch terminal output
-    .stdout
-    // split output in lines
-    .split("\n")
-    // filter out empty strings
-    .filter(id => id !== "")
-    // fetch informations to container id
-    .map(async id => await exec(`docker inspect ${id}`))
-    // get output to each container
-    .map(async info => (await info).stdout)
-    // replace all newlines
-    .map(async info => (await info).replace(/\n/g, ""))
-    // parse into json
-    .map(async info => JSON.parse(await info))
-
-  const infos = await Promise.all(dockerInfo)
+  const containers = await docker.statusWithServiceName() 
   
-  console.log(infos)
+  clear()
+  print('\n')
+
+  for (let container of containers) {
+    print("  ")
+    switch (container.status) {
+      case "running"    : print(chalk.bold.green("✔")); break
+      case "paused"     : print(chalk.bold.grey("Ⅱ")); break
+      case "dead"       : print(chalk.bold.red("✘")); break
+      case "restarting" : print(chalk.bold.cyan("•")); break
+      case "exited"     : print(chalk.bold.grey("Ⅱ")); break
+    }
+
+    println(`  ${container.imageName}`)
+  }
+
+  print('\n')
 }
-main();
+main()
+setInterval(main, redrawTime)
