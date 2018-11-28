@@ -29,7 +29,7 @@ async function stateAll() {
 async function statusWithServiceName() {
   return (await stateAll())
     .map(container => {
-      const rawImageName = container.Config.Image
+      const rawImageName = container.Name
       // Image name has format <folder name>_<service name>_<id>
       //  so we have to split it
       const imageName = rawImageName.split("_")[1]
