@@ -21,9 +21,10 @@ async function stateAll() {
     .map(async info => (await info).replace(/\n/g, ""))
     // parse into json
     .map(async info => JSON.parse(await info))
+    // every container returns array of one, so we have to destructure it
+    .map(async info => (await info)[0])
 
-  const containerInfos = await Promise.all(dockerInfo)
-  return containerInfos[0]
+  return (await Promise.all(dockerInfo))
 }
 
 async function statusWithServiceName() {

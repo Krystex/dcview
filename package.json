@@ -1,6 +1,6 @@
 {
   "name": "dcview",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A docker-compose viewer",
   "main": "src/index.js",
   "license": "MIT",
